@@ -1,0 +1,9 @@
+.card-answer code {
+  padding: 0.05rem 0.5rem;
+  border-radius: 0.25rem;
+  background: #f7fafc;
+}
+
+.card-answer p {
+  padding: 0.5rem 0;
+}

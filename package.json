@@ -8,8 +8,12 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "framer-motion": "^1.9.1",
+    "immer": "^6.0.2",
+    "prop-types": "^15.7.2",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
+    "react-markdown": "^4.3.1",
     "react-scripts": "3.4.0"
   },
   "scripts": {

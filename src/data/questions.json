@@ -1,0 +1,779 @@
+[
+  {
+    "id": 1,
+    "link": "https://github.com/lydiahallie/javascript-questions#1-whats-the-output",
+    "title": "What's the output?",
+    "code": "function sayHi() {\n  console.log(name);\n  console.log(age);\n  var name = 'Lydia';\n  let age = 21;\n}\n\nSayHi();",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`Lydia` and `undefined`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`Lydia` and `ReferenceError`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`ReferenceError` and `21`",
+        "isCorrect": true
+      },
+      {
+        "id": "D",
+        "title": "`undefined` and `ReferenceError`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "Within the function, we first declare the `name` variable with the `var` keyword. This means that the variable gets hoisted (memory space is set up during the creation phase) with the default value of `undefined`, until we actually get to the line where we define the variable. We haven't defined the variable yet on the line where we try to log the `name` variable, so it still holds the value of `undefined`.\n\nVariables with the `let` keyword (and `const`) are hoisted, but unlike `var`, don't get _initialized_. They are not accessible before the line we declare (initialize) them. This is called the \"temporal dead zone\". When we try to access the variables before they are declared, JavaScript throws a `ReferenceError`."
+  },
+  {
+    "id": 2,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#2-whats-the-output",
+    "code": "for (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 1);\n}\n\nfor (let i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 1);\n}",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`0 1 2` and `0 1 2`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`0 1 2` and `3 3 3`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`3 3 3` and `0 1 2`",
+        "isCorrect": true
+      }
+    ],
+    "answer": "Because of the event queue in JavaScript, the `setTimeout` callback function is called _after_ the loop has been executed. Since the variable `i` in the first loop was declared using the `var` keyword, this value was global. During the loop, we incremented the value of `i` by `1` each time, using the unary operator `++`. By the time the `setTimeout` callback function was invoked, `i` was equal to `3` in the first example.\n\nIn the second loop, the variable `i` was declared using the `let` keyword: variables declared with the `let` (and `const`) keyword are block-scoped (a block is anything between `{ }`). During each iteration, `i` will have a new value, and each value is scoped inside the loop."
+  },
+  {
+    "id": 3,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#3-whats-the-output",
+    "code": "const shape = {\n   radius: 10,\n   diameter() {\n      return this.radius * 2;\n   },\n   perimeter: () => 2 * Math.PI * this.radius,\n};\n\nconsole.log(shape.diameter());\nconsole.log(shape.perimeter());",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`20` and `62.83185307179586`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`20` and `NaN`",
+        "isCorrect": true
+      },
+      {
+        "id": "C",
+        "title": "`20` and `63`",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`NaN` and `63`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "Note that the value of `diameter` is a regular function, whereas the value of `perimeter` is an arrow function.\n\nWith arrow functions, the `this` keyword refers to its current surrounding scope, unlike regular functions! This means that when we call `perimeter`, it doesn't refer to the shape object, but to its surrounding scope (window for example).\n\nThere is no value `radius` on that object, which returns `undefined`."
+  },
+  {
+    "id": 4,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#4-whats-the-output",
+    "code": "+true;\n!'Lydia';",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`1` and `false`",
+        "isCorrect": true
+      },
+      {
+        "id": "B",
+        "title": "`false` and `NaN`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`false` and `false`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "The unary plus tries to convert an operand to a number. `true` is `1`, and `false` is `0`.\n\nThe string `'Lydia'` is a truthy value. What we're actually asking, is \"is this truthy value falsy?\". This returns `false`."
+  },
+  {
+    "id": 5,
+    "title": "Which one is true?",
+    "link": "https://github.com/lydiahallie/javascript-questions#5-which-one-is-true",
+    "code": "const bird = {\n   size: 'small',\n};\n\nconst mouse = {\n   name: 'Mickey',\n   small: true,\n};",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`mouse.bird.size` is not valid",
+        "isCorrect": true
+      },
+      {
+        "id": "B",
+        "title": "`mouse[bird.size]` is not valid",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`mouse[bird[\"size\"]]` is not valid",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "All of them are valid",
+        "isCorrect": false
+      }
+    ],
+    "answer": "In JavaScript, all object keys are strings (unless it's a Symbol). Even though we might not type them as strings, they are always converted into strings under the hood.\n\nJavaScript interprets (or unboxes) statements. When we use bracket notation, it sees the first opening bracket `[` and keeps going until it finds the closing bracket `]`. Only then, it will evaluate the statement.\n\n`mouse[bird.size]`: First it evaluates `bird.size`, which is `\"small\"`. `mouse[\"small\"]` returns `true`\n\nHowever, with dot notation, this doesn't happen. `mouse` does not have a key called `bird``, which means that `mouse.bird` is `undefined`. Then, we ask for the `size` using dot notation: `mouse.bird.size`. Since `mouse.bird` is `undefined`, we're actually asking `undefined.size`. This isn't valid, and will throw an error similar to `Cannot read property \"size\" of undefined`."
+  },
+  {
+    "id": 6,
+    "title": " What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#6-whats-the-output",
+    "code": "let c = { greeting: 'Hey!' };\nlet d;\n\nd = c;\nc.greeting = 'Hello';\nconsole.log(d.greeting);",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`Hello`",
+        "isCorrect": true
+      },
+      {
+        "id": "B",
+        "title": "`Hey!`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`undefined`",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`ReferenceError`",
+        "isCorrect": false
+      },
+      {
+        "id": "E",
+        "title": "`TypeError`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "In JavaScript, all objects interact by _reference_ when setting them equal to each other.\n\nFirst, variable `c` holds a value to an object. Later, we assign `d` with the same reference that `c` has to the object.\n\nWhen you change one object, you change all of them."
+  },
+  {
+    "id": 7,
+    "title": " What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#7-whats-the-output",
+    "code": "let a = 3;\nlet b = new Number(3);\nlet c = 3;\n\nconsole.log(a == b);\nconsole.log(a === b);\nconsole.log(b === c);",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`true` `false` `true`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`false` `false` `true`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`true` `false` `false`",
+        "isCorrect": true
+      },
+      {
+        "id": "D",
+        "title": "`false` `true` `true`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "`new Number()` is a built-in function constructor. Although it looks like a number, it's not really a number: it has a bunch of extra features and is an object.\n\nWhen we use the `==` operator, it only checks whether it has the same _value_. They both have the value of `3`, so it returns `true`.\n\nHowever, when we use the `===` operator, both value _and_ type should be the same. It's not: `new Number()` is not a number, it's an **object**. Both return `false`."
+  },
+  {
+    "id": 8,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#8-whats-the-output",
+    "code": "class Chameleon {\nstatic colorChange(newColor) {\n   this.newColor = newColor;\n   return this.newColor;\n}\n\nconstructor({ newColor = 'green' } = {}) {\n      this.newColor = newColor;\n   }\n}\n\nconst freddie = new Chameleon({ newColor: 'purple' });\nconsole.log(freddie.colorChange('orange'));",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`orange`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`purple`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`green`",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`TypeError`",
+        "isCorrect": true
+      }
+    ],
+    "answer": "The `colorChange` function is static. Static methods are designed to live only on the constructor in which they are created, and cannot be passed down to any children. Since `freddie` is a child, the function is not passed down, and not available on the `freddie` instance: a `TypeError` is thrown."
+  },
+  {
+    "id": 9,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#9-whats-the-output",
+    "code": "let greeting;\ngreetign = {}; // Typo!\nconsole.log(greetign);",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`{}`",
+        "isCorrect": true
+      },
+      {
+        "id": "B",
+        "title": "`ReferenceError: greetign is not defined`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`undefined`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "It logs the object, because we just created an empty object on the global object! When we mistyped `greeting` as `greetign`, the JS interpreter actually saw this as `global.greetign = {}` (or `window.greetign = {}` in a browser).\n\nIn order to avoid this, we can use `\"use strict\"`. This makes sure that you have declared a variable before setting it equal to anything."
+  },
+  {
+    "id": 10,
+    "title": "What happens when we do this?",
+    "link": "https://github.com/lydiahallie/javascript-questions#10-what-happens-when-we-do-this",
+    "code": "function bark() {\n  console.log('Woof!');\n}\n\nbark.animal = 'dog';",
+    "variants": [
+      {
+        "id": "A",
+        "title": "Nothing, this is totally fine!",
+        "isCorrect": true
+      },
+      {
+        "id": "B",
+        "title": "`SyntaxError`. You cannot add properties to a function this way.",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`\"Woof\"` gets logged.",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`ReferenceError`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "This is possible in JavaScript, because functions are objects! (Everything besides primitive types are objects)\n\nA function is a special type of object. The code you write yourself isn't the actual function. The function is an object with properties. This property is invocable."
+  },
+  {
+    "id": 11,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#11-whats-the-output",
+    "code": "function Person(firstName, lastName) {\n  this.firstName = firstName;\n  this.lastName = lastName;\n}\n\nconst member = new Person('Lydia', 'Hallie');\nPerson.getFullName = function() {\n  return `${this.firstName} ${this.lastName}`;\n};\n\nconsole.log(member.getFullName());",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`TypeError`",
+        "isCorrect": true
+      },
+      {
+        "id": "B",
+        "title": "`SyntaxError`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`Lydia Hallie`",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`undefined` `undefined`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "You can't add properties to a constructor like you can with regular objects. If you want to add a feature to all objects at once, you have to use the prototype instead. So in this case,\n```\nPerson.prototype.getFullName = function() {\n  return `${this.firstName} ${this.lastName}`;\n};\n```\nwould have made `member.getFullName()` work. Why is this beneficial? Say that we added this method to the constructor itself. Maybe not every `Person` instance needed this method. This would waste a lot of memory space, since they would still have that property, which takes of memory space for each instance. Instead, if we only add it to the prototype, we just have it at one spot in memory, yet they all have access to it!"
+  },
+  {
+    "id": 12,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#12-whats-the-output",
+    "code": "function Person(firstName, lastName) {\n  this.firstName = firstName;\n  this.lastName = lastName;\n}\n\nconst lydia = new Person('Lydia', 'Hallie');\nconst sarah = Person('Sarah', 'Smith');\n\nconsole.log(lydia);\nconsole.log(sarah);",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`Person {firstName: \"Lydia\", lastName: \"Hallie\"}` and `undefined`",
+        "isCorrect": true
+      },
+      {
+        "id": "B",
+        "title": "`Person {firstName: \"Lydia\", lastName: \"Hallie\"}` and `Person {firstName: \"Sarah\", lastName: \"Smith\"}`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`Person {firstName: \"Lydia\", lastName: \"Hallie\"}` and `{}`",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`Person {firstName: \"Lydia\", lastName: \"Hallie\"}` and `ReferenceError`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "For `sarah`, we didn't use the `new` keyword. When using `new`, it refers to the new empty object we create. However, if you don't add `new` it refers to the **global object**!\n\nWe said that `this.firstName` equals `\"Sarah\"` and `this.lastName` equals `\"Smith\"`. What we actually did, is defining `global.firstName = 'Sarah'` and `global.lastName = 'Smith'`. `sarah` itself is left `undefined`, since we don't return a value from the `Person` function."
+  },
+  {
+    "id": 13,
+    "title": "What are the three phases of event propagation?",
+    "link": "https://github.com/lydiahallie/javascript-questions#13-what-are-the-three-phases-of-event-propagation",
+    "code": "",
+    "variants": [
+      {
+        "id": "A",
+        "title": "Target > Capturing > Bubbling",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "Bubbling > Target > Capturing",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "Target > Bubbling > Capturing",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "Capturing > Target > Bubbling",
+        "isCorrect": true
+      }
+    ],
+    "answer": "During the **capturing** phase, the event goes through the ancestor elements down to the target element. It then reaches the **target** element, and **bubbling** begins."
+  },
+  {
+    "id": 14,
+    "title": "All object have prototypes.",
+    "link": "https://github.com/lydiahallie/javascript-questions#14-all-object-have-prototypes",
+    "code": "",
+    "variants": [
+      {
+        "id": "A",
+        "title": "true",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "false",
+        "isCorrect": true
+      }
+    ],
+    "answer": "All objects have prototypes, except for the **base object**. The base object is the object created by the user, or an object that is created using the `new` keyword. The base object has access to some methods and properties, such as `.toString`. This is the reason why you can use built-in JavaScript methods! All of such methods are available on the prototype. Although JavaScript can't find it directly on your object, it goes down the prototype chain and finds it there, which makes it accessible for you."
+  },
+  {
+    "id": 15,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#15-whats-the-output",
+    "code": "function sum(a, b) {\n  return a + b;\n}\n\nsum(1, '2');",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`NaN`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`TypeError`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`\"12\"`",
+        "isCorrect": true
+      },
+      {
+        "id": "D",
+        "title": "`3`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "JavaScript is a **dynamically typed language**: we don't specify what types certain variables are. Values can automatically be converted into another type without you knowing, which is called _implicit type coercion_. **Coercion** is converting from one type into another.\n\nIn this example, JavaScript converts the number `1` into a string, in order for the function to make sense and return a value. During the addition of a numeric type (`1`) and a string type (`'2'`), the number is treated as a string. We can concatenate strings like `\"Hello\" + \"World\"`, so what's happening here is `\"1\" + \"2\"` which returns `\"12\"`."
+  },
+  {
+    "id": 16,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#16-whats-the-output",
+    "code": "let number = 0;\nconsole.log(number++);\nconsole.log(++number);\nconsole.log(number);",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`1` `1` `2`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`1` `2` `2`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`0` `2` `2`",
+        "isCorrect": true
+      },
+      {
+        "id": "D",
+        "title": "`0` `1` `2`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "The **postfix** unary operator `++`:\n\n1. Returns the value (this returns `0`\n2. Increments the value (number is now `1`)\n\nThe **prefix** unary operator `++`:\n\n1. Increments the value (number is now `2`)\n2. Returns the value (this returns `2`)\n\nThis returns `0 2 2`."
+  },
+  {
+    "id": 17,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#17-whats-the-output",
+    "code": "function getPersonInfo(one, two, three) {\n  console.log(one);\n  console.log(two);\n  console.log(three);\n}\n\nconst person = 'Lydia';\nconst age = 21;\n\ngetPersonInfo`${person} is ${age} years old`;",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`\"Lydia\"` `21` `[\"\", \" is \", \" years old\"]`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`[\"\", \" is \", \" years old\"]` `\"Lydia\"` `21`",
+        "isCorrect": true
+      },
+      {
+        "id": "C",
+        "title": "`\"Lydia\"` `[\"\", \" is \", \" years old\"]` `21`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "If you use tagged template literals, the value of the first argument is always an array of the string values. The remaining arguments get the values of the passed expressions!"
+  },
+  {
+    "id": 18,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#18-whats-the-output",
+    "code": "function checkAge(data) {\n  if (data === { age: 18 }) {\n    console.log('You are an adult!');\n  } else if (data == { age: 18 }) {\n    console.log('You are still an adult.');\n  } else {\n    console.log(`Hmm.. You don't have an age I guess`);\n  }\n}\n\ncheckAge({ age: 18 });",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`You are an adult!`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`You are still an adult.`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`Hmm.. You don't have an age I guess`",
+        "isCorrect": true
+      }
+    ],
+    "answer": "When testing equality, primitives are compared by their _value_, while objects are compared by their _reference_. JavaScript checks if the objects have a reference to the same location in memory.\n\nThe two objects that we are comparing don't have that: the object we passed as a parameter refers to a different location in memory than the object we used in order to check equality.\n\nThis is why both `{ age: 18 } === { age: 18 }` and `{ age: 18 } == { age: 18 }` return `false`."
+  },
+  {
+    "id": 19,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#19-whats-the-output",
+    "code": "function getAge(...args) {\n  console.log(typeof args);\n}\n\ngetAge(21);",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`\"number\"`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`\"array\"`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`\"object\"`",
+        "isCorrect": true
+      },
+      {
+        "id": "D",
+        "title": "`\"NaN\"`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "The rest parameter (`...args`.) lets us \"collect\" all remaining arguments into an array. An array is an object, so `typeof args` returns `\"object\"`"
+  },
+  {
+    "id": 20,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#20-whats-the-output",
+    "code": "function getAge() {\n  'use strict';\n  age = 21;\n  console.log(age);\n}\n\ngetAge();",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`21`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`undefined`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`ReferenceError`",
+        "isCorrect": true
+      },
+      {
+        "id": "D",
+        "title": "`TypeError`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "With `\"use strict\"`, you can make sure that you don't accidentally declare global variables. We never declared the variable `age`, and since we use `\"use strict\"`, it will throw a reference error. If we didn't use `\"use strict\"`, it would have worked, since the property `age` would have gotten added to the global object."
+  },
+  {
+    "id": 21,
+    "title": "What's value of 'sum'?",
+    "link": "https://github.com/lydiahallie/javascript-questions#21-whats-value-of-sum",
+    "code": "const sum = eval('10*10+5');",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`105`",
+        "isCorrect": true
+      },
+      {
+        "id": "B",
+        "title": "`\"105\"`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`TypeError`",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`\"10*10+5\"`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "`eval` evaluates codes that's passed as a string. If it's an expression, like in this case, it evaluates the expression. The expression is `10 * 10 + 5`. This returns the number `105`."
+  },
+  {
+    "id": 22,
+    "title": "How long is cool_secret accessible?",
+    "link": "https://github.com/lydiahallie/javascript-questions#22-how-long-is-cool_secret-accessible",
+    "code": "sessionStorage.setItem('cool_secret', 123);",
+    "variants": [
+      {
+        "id": "A",
+        "title": "Forever, the data doesn't get lost.",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "When the user closes the tab.",
+        "isCorrect": true
+      },
+      {
+        "id": "C",
+        "title": "When the user closes the entire browser, not only the tab.",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "When the user shuts off their computer.",
+        "isCorrect": false
+      }
+    ],
+    "answer": "The data stored in `sessionStorage` is removed after closing the _tab_.\n\nIf you used `localStorage`, the data would've been there forever, unless for example `localStorage.clear()` is invoked."
+  },
+  {
+    "id": 23,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#23-whats-the-output",
+    "code": "var num = 8;\nvar num = 10;\n\nconsole.log(num);",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`8`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`10`",
+        "isCorrect": true
+      },
+      {
+        "id": "C",
+        "title": "`SyntaxError`",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`ReferenceError`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "With the `var` keyword, you can declare multiple variables with the same name. The variable will then hold the latest value.\n\nYou cannot do this with `let` or `const` since they're block-scoped."
+  },
+  {
+    "id": 24,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#24-whats-the-output",
+    "code": "const obj = { 1: 'a', 2: 'b', 3: 'c' };\nconst set = new Set([1, 2, 3, 4, 5]);\n\nobj.hasOwnProperty('1');\nobj.hasOwnProperty(1);\nset.has('1');\nset.has(1);",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`false` `true` `false` `true`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`false` `true` `true` `true`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`true` `true` `false` `true`",
+        "isCorrect": true
+      },
+      {
+        "id": "D",
+        "title": "`true` `true` `true` `true`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "All object keys (excluding Symbols) are strings under the hood, even if you don't type it yourself as a string. This is why `obj.hasOwnProperty('1')` also returns true.\n\nIt doesn't work that way for a set. There is no `'1'` in our set: `set.has('1')` returns `false`. It has the numeric type `1`, `set.has(1)` returns `true`."
+  },
+  {
+    "id": 25,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#25-whats-the-output",
+    "code": "const obj = { a: 'one', b: 'two', a: 'three' };\nconsole.log(obj);",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`{ a: \"one\", b: \"two\" }`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`{ b: \"two\", a: \"three\" }`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`{ a: \"three\", b: \"two\" }`",
+        "isCorrect": true
+      },
+      {
+        "id": "D",
+        "title": "`SyntaxError`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "If you have two keys with the same name, the key will be replaced. It will still be in its first position, but with the last specified value."
+  },
+  {
+    "id": 26,
+    "title": "The JavaScript global execution context creates two things for you: the global object, and the \"this\" keyword.",
+    "link": "https://github.com/lydiahallie/javascript-questions#26-the-javascript-global-execution-context-creates-two-things-for-you-the-global-object-and-the-this-keyword",
+    "code": "",
+    "variants": [
+      {
+        "id": "A",
+        "title": "true",
+        "isCorrect": true
+      },
+      {
+        "id": "B",
+        "title": "false",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "it depends",
+        "isCorrect": false
+      }
+    ],
+    "answer": "The base execution context is the global execution context: it's what's accessible everywhere in your code."
+  },
+  {
+    "id": 27,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#27-whats-the-output",
+    "code": "for (let i = 1; i < 5; i++) {\n  if (i === 3) continue;\n  console.log(i);\n}",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`1` `2`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`1` `2` `3`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`1` `2` `4`",
+        "isCorrect": true
+      },
+      {
+        "id": "D",
+        "title": "`1` `3` `4`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "The `continue` statement skips an iteration if a certain condition returns `true`."
+  },
+  {
+    "id": 28,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#28-whats-the-output",
+    "code": "String.prototype.giveLydiaPizza = () => {\n  return 'Just give Lydia pizza already!';\n};\n\nconst name = 'Lydia';\n\nname.giveLydiaPizza();",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`\"Just give Lydia pizza already!\"`",
+        "isCorrect": true
+      },
+      {
+        "id": "B",
+        "title": "`TypeError: not a function`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`SyntaxError`",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`undefined`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "`String` is a built-in constructor, which we can add properties to. I just added a method to its prototype. Primitive strings are automatically converted into a string object, generated by the string prototype function. So, all strings (string objects) have access to that method!"
+  }
+]

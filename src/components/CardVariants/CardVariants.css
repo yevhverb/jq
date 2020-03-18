@@ -1,0 +1,13 @@
+.card-variant code {
+  padding: 0.3rem 0.5rem;
+  border-radius: 0.25rem;
+  background: #e2e8f0;
+}
+
+.card-variant.correct code {
+  background: #9ae6b4;
+}
+
+.card-variant.uncorrect code {
+  background: #faf089;
+}

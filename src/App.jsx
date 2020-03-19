@@ -4,6 +4,7 @@ import { shuffle } from 'lodash';
 import AppContainer from './components/AppContainer';
 import AppProgress from './components/AppProgress';
 import Card from './components/Card';
+import AppStart from './components/AppStart';
 import AppResult from './components/AppResult';
 
 import questions from './data/questions.json';
@@ -17,6 +18,10 @@ const App = () => {
     correct: 0,
     answered: 0
   });
+
+  const [isStart, setIsStart] = useState(true);
+
+  const handleStart = () => setIsStart(false);
 
   const handleSwipe = variant => {
     setState(
@@ -41,16 +46,20 @@ const App = () => {
 
   return (
     <AppContainer>
-      <AppProgress percent={percent} />
-      {state.cards
-        .slice(-1)
-        .map(card =>
-          card ? (
-            <Card {...card} handleSwipe={handleSwipe} key={card.id} />
-          ) : (
-            <AppResult {...{ correct, answered }} key={0} />
-          )
-        )}
+      {isStart && (
+        <AppStart {...{ handleStart }} questions={questions.length} />
+      )}
+      {!isStart && <AppProgress percent={percent} />}
+      {!isStart &&
+        state.cards
+          .slice(-1)
+          .map(card =>
+            card ? (
+              <Card {...card} handleSwipe={handleSwipe} key={card.id} />
+            ) : (
+              <AppResult {...{ correct, answered }} key={0} />
+            )
+          )}
     </AppContainer>
   );
 };

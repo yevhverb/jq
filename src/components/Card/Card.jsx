@@ -9,21 +9,27 @@ import CardAnswer from '../CardAnswer';
 import CardVariants from '../CardVariants';
 
 const Card = ({ id, link, title, code, answer, variants, handleSwipe }) => {
-  const [idChoiced, setIdChoiced] = useState('');
+  const [variant, setVariant] = useState(null);
 
-  const handleChoice = id => setIdChoiced(id);
+  const handleChoice = variant => setVariant(variant);
 
   return (
     <ScaleMotion className="w-full h-full">
-      <DragXMotion className="w-full h-full" handler={handleSwipe}>
+      <DragXMotion
+        className="w-full h-full"
+        handler={() => handleSwipe(variant)}
+      >
         <CardContainer>
           <CardID {...{ id, link }} />
           <CardTitle {...{ title }} />
-          <CardCode {...{ code }} />
-          <ScaleMotion isShow={!!idChoiced} isAnimateHeight={true}>
+          {code && <CardCode {...{ code }} />}
+          <ScaleMotion isShow={!!variant} isAnimateHeight={true}>
             <CardAnswer {...{ answer }} />
           </ScaleMotion>
-          <CardVariants {...{ variants, idChoiced, handleChoice }} />
+          <CardVariants
+            {...{ variants, handleChoice }}
+            idChoiced={variant?.id}
+          />
         </CardContainer>
       </DragXMotion>
     </ScaleMotion>

@@ -15,21 +15,30 @@ const App = () => {
     questions: others,
     cards: [first],
     correct: 0,
-    answered: 0,
-    viewed: 0
+    answered: 0
   });
 
-  const handleSwipe = () => {
+  console.log('state.cards', state.cards);
+
+  const handleSwipe = variant => {
     setState(
       produce(state, draft => {
-        draft.viewed += 1;
+        if (variant?.id) {
+          draft.answered += 1;
+          if (variant.isCorrect) draft.correct += 1;
+        } else {
+          const last = draft.cards.length - 1;
+
+          draft.questions.push(draft.cards[last]);
+          draft.cards.length -= 1;
+        }
         draft.cards.push(draft.questions[0]);
         draft.questions.shift();
       })
     );
   };
 
-  const { cards, viewed } = state;
+  const { cards, correct, answered } = state;
   const percent = (cards.length / questions.length) * 100;
 
   return (
@@ -39,9 +48,9 @@ const App = () => {
         .slice(-1)
         .map(card =>
           card ? (
-            <Card key={card.id} handleSwipe={handleSwipe} {...card} />
+            <Card {...card} handleSwipe={handleSwipe} key={card.id} />
           ) : (
-            <AppResult key={0} {...{ viewed }} />
+            <AppResult {...{ correct, answered }} key={0} />
           )
         )}
     </AppContainer>

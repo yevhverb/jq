@@ -6,7 +6,7 @@ const CardID = ({ id = 'NO', link = '#' }) => {
     <div className="flex items-center justify-between mb-6">
       <h2 className="text-3xl font-bold"># {id}</h2>
       <a href={link} target="_blank" rel="noopener noreferrer">
-        <i className="fas fa-link"></i>
+        <i className="fas fa-link text-gray-500"></i>
       </a>
     </div>
   );

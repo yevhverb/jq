@@ -6,7 +6,7 @@ const AppProgerss = ({ percent }) => {
     <div className="fixed top-0 left-0 right-0 h-2 bg-gray-300">
       <div
         className="absolute top-0 left-0 h-full bg-green-300"
-        style={{ width: `${percent}%` }}
+        style={{ width: `${percent}%`, transition: '175ms' }}
       />
     </div>
   );

@@ -38,6 +38,9 @@ const AppStart = ({ questions, handleStart }) => {
   );
 };
 
-AppStart.propTypes = {};
+AppStart.propTypes = {
+  questions: T.oneOfType([T.string, T.number]),
+  handleStart: T.func
+};
 
 export default AppStart;

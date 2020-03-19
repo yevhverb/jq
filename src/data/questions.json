@@ -132,7 +132,7 @@
         "isCorrect": false
       }
     ],
-    "answer": "In JavaScript, all object keys are strings (unless it's a Symbol). Even though we might not type them as strings, they are always converted into strings under the hood.\n\nJavaScript interprets (or unboxes) statements. When we use bracket notation, it sees the first opening bracket `[` and keeps going until it finds the closing bracket `]`. Only then, it will evaluate the statement.\n\n`mouse[bird.size]`: First it evaluates `bird.size`, which is `\"small\"`. `mouse[\"small\"]` returns `true`\n\nHowever, with dot notation, this doesn't happen. `mouse` does not have a key called `bird``, which means that `mouse.bird` is `undefined`. Then, we ask for the `size` using dot notation: `mouse.bird.size`. Since `mouse.bird` is `undefined`, we're actually asking `undefined.size`. This isn't valid, and will throw an error similar to `Cannot read property \"size\" of undefined`."
+    "answer": "In JavaScript, all object keys are strings (unless it's a Symbol). Even though we might not type them as strings, they are always converted into strings under the hood.\n\nJavaScript interprets (or unboxes) statements. When we use bracket notation, it sees the first opening bracket `[` and keeps going until it finds the closing bracket `]`. Only then, it will evaluate the statement.\n\n`mouse[bird.size]`: First it evaluates `bird.size`, which is `\"small\"`. `mouse[\"small\"]` returns `true`\n\nHowever, with dot notation, this doesn't happen. `mouse` does not have a key called `bird`, which means that `mouse.bird` is `undefined`. Then, we ask for the `size` using dot notation: `mouse.bird.size`. Since `mouse.bird` is `undefined`, we're actually asking `undefined.size`. This isn't valid, and will throw an error similar to `Cannot read property \"size\" of undefined`."
   },
   {
     "id": 6,
@@ -1384,5 +1384,865 @@
       }
     ],
     "answer": "Arguments are passed by _value_, unless their value is an object, then they're passed by _reference_. `birthYear` is passed by value, since it's a string, not an object. When we pass arguments by value, a _copy_ of that value is created (see question 46).\n\nThe variable `birthYear` has a reference to the value `\"1997\"`. The argument `year` also has a reference to the value `\"1997\"`, but it's not the same value as `birthYear` has a reference to. When we update the value of `year` by setting `year` equal to `\"1998\"`, we are only updating the value of `year`. `birthYear` is still equal to `\"1997\"`.\n\nThe value of `person` is an object. The argument `member` has a (copied) reference to the _same_ object. When we modify a property of the object `member` has a reference to, the value of `person` will also be modified, since they both have a reference to the same object. `person`'s `name` property is now equal to the value `\"Lydia\"`"
+  },
+  {
+    "id": 52,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#52-whats-the-output",
+    "code": "function greeting() {\n  throw 'Hello world!';\n}\n\nfunction sayHi() {\n  try {\n    const data = greeting();\n    console.log('It worked!', data);\n} catch (e) {\n    console.log('Oh no an error:', e);\n  }\n}\n\nsayHi();",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`It worked! Hello world!`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`Oh no an error: undefined`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`SyntaxError: can only throw Error objects`",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`Oh no an error: Hello world!`",
+        "isCorrect": true
+      }
+    ],
+    "answer": "With the `throw` statement, we can create custom errors. With this statement, you can throw exceptions. An exception can be a <b>string</b>, a <b>number</b>, a <b>boolean</b> or an <b>object</b>. In this case, our exception is the string `'Hello world'`.\n\nWith the `catch` statement, we can specify what to do if an exception is thrown in the `try` block. An exception is thrown: the string `'Hello world'`. `e` is now equal to that string, which we log. This results in `'Oh an error: Hello world'`."
+  },
+  {
+    "id": 53,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#53-whats-the-output",
+    "code": "function Car() {\n  this.make = 'Lamborghini';\n  return { make: 'Maserati' };\n}\n\nconst myCar = new Car();\nconsole.log(myCar.make);",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`\"Lamborghini\"`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`\"Maserati\"`",
+        "isCorrect": true
+      },
+      {
+        "id": "C",
+        "title": "`ReferenceError`",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`TypeError`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "When you return a property, the value of the property is equal to the _returned_ value, not the value set in the constructor function. We return the string `\"Maserati\"`, so `myCar.make` is equal to `\"Maserati\"`."
+  },
+  {
+    "id": 54,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#54-whats-the-output",
+    "code": "(() => {\n  let x = (y = 10);\n})();\n\nconsole.log(typeof x);\nconsole.log(typeof y);",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`\"undefined\", \"number\"`",
+        "isCorrect": true
+      },
+      {
+        "id": "B",
+        "title": "`\"number\", \"number\"`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`\"object\", \"number\"`",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`\"number\", \"undefined\"`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "`let x = y = 10;` is actually shorthand for\n\n```y = 10;\nlet x = y;```\n\nWhen we set `y` equal to `10`, we actually add a property `y` to the global object (`window` in browser, `global` in Node). In a browser, `window.y` is now equal to `10`.\n\nThen, we declare a variable `x` with the value of `y`, which is `10`. Variables declared with the `let` keyword are _block scoped_, they are only defined within the block they're declared in; the immediately-invoked function (IIFE) in this case. When we use the `typeof` operator, the operand `x` is not defined: we are trying to access `x` outside of the block it's declared in. This means that `x` is not defined. Values who haven't been assigned a value or declared are of type `\"undefined\"`. `console.log(typeof x)` returns `\"undefined\"`.\n\nHowever, we created a global variable `y` when setting `y` equal to `10`. This value is accessible anywhere in our code. `y` is defined, and holds a value of type `\"number\"`. `console.log(typeof y)` returns `\"number\"`."
+  },
+  {
+    "id": 55,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#55-whats-the-output",
+    "code": "class Dog {\n  constructor(name) {\n    this.name = name;\n  }\n}\n\nDog.prototype.bark = function() {\n  console.log(`Woof I am ${this.name}`);\n};\n\nconst pet = new Dog('Mara');\n\npet.bark();\n\ndelete Dog.prototype.bark;\n\npet.bark();",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`\"Woof I am Mara\"`, `TypeError`",
+        "isCorrect": true
+      },
+      {
+        "id": "B",
+        "title": "`\"Woof I am Mara\"`, `\"Woof I am Mara\"`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`\"Woof I am Mara\"`, `undefined`",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`TypeError`, `TypeError`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "We can delete properties from objects using the `delete` keyword, also on the prototype. By deleting a property on the prototype, it is not available anymore in the prototype chain. In this case, the `bark` function is not available anymore on the prototype after `delete Dog.prototype.bark`, yet we still try to access it.\n\nWhen we try to invoke something that is not a function, a `TypeError` is thrown. In this case `TypeError: pet.bark is not a function`, since `pet.bark` is `undefined`."
+  },
+  {
+    "id": 56,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#56-whats-the-output",
+    "code": "const set = new Set([1, 1, 2, 3, 4]);\n\nconsole.log(set);",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`[1, 1, 2, 3, 4]`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`[1, 2, 3, 4]`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`{1, 1, 2, 3, 4}`",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`{1, 2, 3, 4}`",
+        "isCorrect": true
+      }
+    ],
+    "answer": "The `Set` object is a collection of _unique_ values: a value can only occur once in a set.\n\nWe passed the iterable `[1, 1, 2, 3, 4]` with a duplicate value `1`. Since we cannot have two of the same values in a set, one of them is removed. This results in `{1, 2, 3, 4}`."
+  },
+  {
+    "id": 57,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#57-whats-the-output",
+    "code": "// counter.js\nlet counter = 10;\nexport default counter; \n\n\n\n// index.js\nimport myCounter from './counter';\n\nmyCounter += 1;\n\nconsole.log(myCounter);",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`10`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`11`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`Error`",
+        "isCorrect": true
+      },
+      {
+        "id": "D",
+        "title": "`NaN`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "An imported module is _read-only_: you cannot modify the imported module. Only the module that exports them can change its value.\n\nWhen we try to increment the value of `myCounter`, it throws an error: `myCounter` is read-only and cannot be modified."
+  },
+  {
+    "id": 58,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#58-whats-the-output",
+    "code": "const name = 'Lydia';\nage = 21;\n\nconsole.log(delete name);\nconsole.log(delete age);",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`false`, `true`",
+        "isCorrect": true
+      },
+      {
+        "id": "B",
+        "title": "`\"Lydia\"`, `21`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`true`, `true`",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`undefined`, `undefined`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "The `delete` operator returns a boolean value: `true` on a successful deletion, else it'll return `false`. However, variables declared with the `var`, `const` or `let` keyword cannot be deleted using the `delete` operator.\n\nThe `name` variable was declared with a `const` keyword, so its deletion is not successful: `false` is returned. When we set `age` equal to `21`, we actually added a property called `age` to the global object. You can successfully delete properties from objects this way, also the global object, so `delete age` returns `true`."
+  },
+  {
+    "id": 59,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#59-whats-the-output",
+    "code": "const numbers = [1, 2, 3, 4, 5];\nconst [y] = numbers;\n\nconsole.log(y);",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`[[1, 2, 3, 4, 5]]`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`[1, 2, 3, 4, 5]`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`1`",
+        "isCorrect": true
+      },
+      {
+        "id": "D",
+        "title": "`[1]`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "We can unpack values from arrays or properties from objects through destructuring. For example:\n\n`[a, b] = [1, 2];`\n\nThe value of `a` is now `1`, and the value of `b` is now `2`. What we actually did in the question, is:\n\n`[y] = [1, 2, 3, 4, 5];`\n\nThis means that the value of `y` is equal to the first value in the array, which is the number `1`. When we log `y`, `1` is returned."
+  },
+  {
+    "id": 60,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#60-whats-the-output",
+    "code": "const user = { name: 'Lydia', age: 21 };\nconst admin = { admin: true, ...user };\n\nconsole.log(admin);",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`{ admin: true, user: { name: \"Lydia\", age: 21 } }`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`{ admin: true, name: \"Lydia\", age: 21 }`",
+        "isCorrect": true
+      },
+      {
+        "id": "C",
+        "title": "`{ admin: true, user: [\"Lydia\", 21] }`",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`{ admin: true }`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "It's possible to combine objects using the spread operator `...`. It lets you create copies of the key/value pairs of one object, and add them to another object. In this case, we create copies of the `user` object, and add them to the `admin` object. The `admin` object now contains the copied key/value pairs, which results in `{ admin: true, name: \"Lydia\", age: 21 }`."
+  },
+  {
+    "id": 61,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#61-whats-the-output",
+    "code": "const person = { name: 'Lydia' };\n\nObject.defineProperty(person, 'age', { value: 21 });\n\nconsole.log(person);\nconsole.log(Object.keys(person));",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`{ name: \"Lydia\", age: 21 }`, `[\"name\", \"age\"]`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`{ name: \"Lydia\", age: 21 }`, `[\"name\"]`",
+        "isCorrect": true
+      },
+      {
+        "id": "C",
+        "title": "`{ name: \"Lydia\"}`, `[\"name\", \"age\"]`",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`{ name: \"Lydia\"}`, `[\"age\"]`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "With the `defineProperty` method, we can add new properties to an object, or modify existing ones. When we add a property to an object using the `defineProperty` method, they are by default _not enumerable_. The `Object.keys` method returns all _enumerable_ property names from an object, in this case only `\"name\"`.\n\nProperties added using the `defineProperty` method are immutable by default. You can override this behavior using the `writable`, `configurable` and `enumerable` properties. This way, the `defineProperty` method gives you a lot more control over the properties you're adding to an object."
+  },
+  {
+    "id": 62,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#62-whats-the-output",
+    "code": "const settings = {\n  username: 'lydiahallie',\n  level: 19,\n  health: 90,\n};\n\nconst data = JSON.stringify(settings, ['level', 'health']);\nconsole.log(data);",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`\"{\"level\":19, \"health\":90}\"`",
+        "isCorrect": true
+      },
+      {
+        "id": "B",
+        "title": "`\"{\"username\": \"lydiahallie\"}\"`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`\"[\"level\", \"health\"]\"`",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`\"{\"username\": \"lydiahallie\", \"level\":19, \"health\":90}\"`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "The second argument of `JSON.stringify` is the _replacer_. The replacer can either be a function or an array, and lets you control what and how the values should be stringified.\n\nIf the replacer is an _array_, only the property names included in the array will be added to the JSON string. In this case, only the properties with the names `\"level\"` and `\"health\"` are included, `\"username\"` is excluded. `data` is now equal to `\"{\"level\":19, \"health\":90}\"`.\n\nIf the replacer is a _function_, this function gets called on every property in the object you're stringifying. The value returned from this function will be the value of the property when it's added to the JSON string. If the value is `undefined`, this property is excluded from the JSON string."
+  },
+  {
+    "id": 63,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#63-whats-the-output",
+    "code": "let num = 10;\n\nconst increaseNumber = () => num++;\nconst increasePassedNumber = number => number++;\n\nconst num1 = increaseNumber();\nconst num2 = increasePassedNumber(num1);\n\nconsole.log(num1);\nconsole.log(num2);",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`10`, `10`",
+        "isCorrect": true
+      },
+      {
+        "id": "B",
+        "title": "`10`, `11`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`11`, `11`",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`11`, `12`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "The unary operator `++` _first returns_ the value of the operand, _then increments_ the value of the operand. The value of `num1` is `10`, since the `increaseNumber` function first returns the value of `num`, which is `10`, and only increments the value of `num` afterwards.\n\n`num2` is `10`, since we passed `num1` to the `increasePassedNumber`. `number` is equal to `10`(the value of `num1`. Again, the unary operator `++` _first returns_ the value of the operand, _then increments_ the value of the operand. The value of `number` is `10`, so `num2` is equal to `10`."
+  },
+  {
+    "id": 64,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#64-whats-the-output",
+    "code": "const value = { number: 10 };\n\nconst multiply = (x = { ...value }) => {\n  console.log((x.number *= 2));\n};\n\nmultiply();\nmultiply();\nmultiply(value);\nmultiply(value);",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`20`, `40`, `80`, `160`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`20`, `40`, `20`, `40`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`20`, `20`, `20`, `40`",
+        "isCorrect": true
+      },
+      {
+        "id": "D",
+        "title": "`NaN`, `NaN`, `20`, `40`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "In ES6, we can initialize parameters with a default value. The value of the parameter will be the default value, if no other value has been passed to the function, or if the value of the parameter is `\"undefined\"`. In this case, we spread the properties of the `value` object into a new object, so `x` has the default value of `{ number: 10 }`.\n\nThe default argument is evaluated at _call time_! Every time we call the function, a _new_ object is created. We invoke the `multiply` function the first two times without passing a value: `x` has the default value of `{ number: 10 }`. We then log the multiplied value of that number, which is `20`.\n\nThe third time we invoke multiply, we do pass an argument: the object called `value`. The `*=` operator is actually shorthand for `x.number = x.number * 2`: we modify the value of `x.number`, and log the multiplied value `20`.\n\nThe fourth time, we pass the `value` object again. `x.number` was previously modified to `20`, so `x.number *= 2` logs `40`."
+  },
+  {
+    "id": 65,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#65-whats-the-output",
+    "code": "[1, 2, 3, 4].reduce((x, y) => console.log(x, y));",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`1` `2` and `3` `3` and `6` `4`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`1` `2` and `2` `3` and `3` `4`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`1` `undefined` and `2` `undefined` and `3` `undefined` and `4` `undefined`",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`1` `2` and `undefined` `3` and `undefined` `4`",
+        "isCorrect": true
+      }
+    ],
+    "answer": "The first argument that the `reduce` method receives is the _accumulator_, `x` in this case. The second argument is the _current value_, `y`. With the reduce method, we execute a callback function on every element in the array, which could ultimately result in one single value.\n\nIn this example, we are not returning any values, we are simply logging the values of the accumulator and the current value.\n\nThe value of the accumulator is equal to the previously returned value of the callback function. If you don't pass the optional `initialValue` argument to the `reduce` method, the accumulator is equal to the first element on the first call.\n\nOn the first call, the accumulator (`x`) is `1`, and the current value (`y`) is `2`. We don't return from the callback function, we log the accumulator and current value: `1` and `2` get logged.\n\nIf you don't return a value from a function, it returns `undefined`. On the next call, the accumulator is `undefined`, and the current value is `3`. `undefined` and `3` get logged.\n\nOn the fourth call, we again don't return from the callback function. The accumulator is again `undefined`, and the current value is `4`. `undefined` and `4` get logged."
+  },
+  {
+    "id": 66,
+    "title": "With which constructor can we successfully extend the 'Dog' class?",
+    "link": "https://github.com/lydiahallie/javascript-questions#66-with-which-constructor-can-we-successfully-extend-the-dog-class",
+    "code": "class Dog \n  constructor(name) {\n    this.name = name;\n  }\n};\n\nclass Labrador extends Dog {\n  // 1\n  constructor(name, size) {\n    this.size = size;\n  }\n  // 2\n  constructor(name, size) {\n    super(name);\n    this.size = size;\n}\n  // 3\n  constructor(size) {\n    super(name);\n    this.size = size;\n  }\n  // 4\n  constructor(name, size) {\n    this.name = name\n    this.size = size;\n  }\n};",
+    "variants": [
+      {
+        "id": "A",
+        "title": "1",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "2",
+        "isCorrect": true
+      },
+      {
+        "id": "C",
+        "title": "3",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "4",
+        "isCorrect": false
+      }
+    ],
+    "answer": "In a derived class, you cannot access the `this` keyword before calling `super`. If you try to do that, it will throw a ReferenceError: 1 and 4 would throw a reference error.\n\nWith the `super` keyword, we call that parent class's constructor with the given arguments. The parent's constructor receives the `name` argument, so we need to pass `name` to `super`.\n\nThe `Labrador` class receives two arguments, `name` since it extends `Dog`, and `size` as an extra property on the `Labrador` class. They both need to be passed to the constructor function on `Labrador`, which is done correctly using constructor 2."
+  },
+  {
+    "id": 67,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#67-whats-the-output",
+    "code": "// index.js\nconsole.log('running index.js');\nimport { sum } from './sum.js';\nconsole.log(sum(1, 2));\n\n\n\n// sum.js\nconsole.log('running sum.js');\nexport const sum = (a, b) => a + b;",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`running index.js`, `running sum.js`, `3`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`running sum.js`, `running index.js`, `3`",
+        "isCorrect": true
+      },
+      {
+        "id": "C",
+        "title": "`running sum.js`, `3`, `running index.js`",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`running index.js`, `undefined`, `running sum.js`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "With the `import` keyword, all imported modules are _pre-parsed_. This means that the imported modules get run _first_, the code in the file which imports the module gets executed _after_.\n\nThis is a difference between `require()` in CommonJS and `import`! With `require()`, you can load dependencies on demand while the code is being run. If we would have used `require` instead of `import`, `running index.js`, `running sum.js`, `3` would have been logged to the console."
+  },
+  {
+    "id": 68,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#68-whats-the-output",
+    "code": "console.log(Number(2) === Number(2));\nconsole.log(Boolean(false) === Boolean(false));\nconsole.log(Symbol('foo') === Symbol('foo'));",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`true`, `true`, `false`",
+        "isCorrect": true
+      },
+      {
+        "id": "B",
+        "title": "`false`, `true`, `false`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`true`, `false`, `true`",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`true`, `true`, `true`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "Every Symbol is entirely unique. The purpose of the argument passed to the Symbol is to give the Symbol a description. The value of the Symbol is not dependent on the passed argument. As we test equality, we are creating two entirely new symbols: the first `Symbol('foo')`, and the second `Symbol('foo')`. These two values are unique and not equal to each other, `Symbol('foo') === Symbol('foo')` returns `false`."
+  },
+  {
+    "id": 69,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#69-whats-the-output",
+    "code": "const name = 'Lydia Hallie';\nconsole.log(name.padStart(13));\nconsole.log(name.padStart(2));",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`\"Lydia Hallie\"`, `\"Lydia Hallie\"`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": " `\" Lydia Hallie\"`, `\" Lydia Hallie\"` (`\"[13x whitespace]Lydia Hallie\"`, `\"[2x whitespace]Lydia Hallie\"`)",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`\" Lydia Hallie\"`, `\"Lydia Hallie\"` (`\"[1x whitespace]Lydia Hallie\"`, `\"Lydia Hallie\"`)",
+        "isCorrect": true
+      },
+      {
+        "id": "D",
+        "title": "`\"Lydia Hallie\"`, `\"Lyd\"`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "With the `padStart` method, we can add padding to the beginning of a string. The value passed to this method is the _total_ length of the string together with the padding. The string `\"Lydia Hallie\"` has a length of `12`. `name.padStart(13)` inserts 1 space at the start of the string, because 12 + 1 is 13.\n\nIf the argument passed to the `padStart` method is smaller than the length of the array, no padding will be added."
+  },
+  {
+    "id": 70,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#70-whats-the-output",
+    "code": "console.log('🥑' + '💻');",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`\"🥑💻\"`",
+        "isCorrect": true
+      },
+      {
+        "id": "B",
+        "title": "`257548``)",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "A string containing their code points",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "Error",
+        "isCorrect": false
+      }
+    ],
+    "answer": "With the `+` operator, you can concatenate strings. In this case, we are concatenating the string `\"🥑\"` with the string `\"💻\"`, resulting in `\"🥑💻\"`."
+  },
+  {
+    "id": 71,
+    "title": "How can we log the values that are commented out after the console.log statement?",
+    "link": "https://github.com/lydiahallie/javascript-questions#71-how-can-we-log-the-values-that-are-commented-out-after-the-consolelog-statement",
+    "code": "function* startGame() {\n  const answer = yield 'Do you love JavaScript?';\n  if (answer !== 'Yes') {\n    return \"Oh wow... Guess we're gone here\";\n  }\n  return 'JavaScript loves you back ❤️';\n}\n\nconst game = startGame();\nconsole.log(/* 1 */); // Do you love JavaScript?\nconsole.log(/* 2 */); // JavaScript loves you back ❤️",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`game.next(\"Yes\").value` and `game.next().value`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`game.next.value(\"Yes\")` and `game.next.value()``)",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`game.next().value` and `game.next(\"Yes\").value`",
+        "isCorrect": true
+      },
+      {
+        "id": "D",
+        "title": "`game.next.value()` and `game.next.value(\"Yes\")`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "A generator function \"pauses\" its execution when it sees the `yield` keyword. First, we have to let the function yield the string \"Do you love JavaScript?\", which can be done by calling `game.next().value`.\n\nEvery line is executed, until it finds the first `yield` keyword. There is a `yield` keyword on the first line within the function: the execution stops with the first yield! _This means that the variable `answer` is not defined yet!_\n\nWhen we call `game.next(\"Yes\").value`, the previous `yield` is replaced with the value of the parameters passed to the `next()` function, `\"Yes\"` in this case. The value of the variable `answer` is now equal to `\"Yes\"`. The condition of the if-statement returns `false`, and `JavaScript loves you back ❤️` gets logged."
+  },
+  {
+    "id": 73,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#73-whats-the-output",
+    "code": "async function getData() {\n  return await Promise.resolve('I made it!');\n}\n\nconst data = getData();\nconsole.log(data);",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`\"I made it!\"`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`Promise {<resolved>: \"I made it!\"}`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`Promise {<pending>}`",
+        "isCorrect": true
+      },
+      {
+        "id": "D",
+        "title": "`undefined`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "An async function always returns a promise. The `await` still has to wait for the promise to resolve: a pending promise gets returned when we call `getData()` in order to set `data` equal to it.\n\nIf we wanted to get access to the resolved value `\"I made it\"`, we could have used the `.then()` method on `data`:\n\n`data.then(res => console.log(res))`\n\nThis would've logged `\"I made it!\"`"
+  },
+  {
+    "id": 74,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#74-whats-the-output",
+    "code": "function addToList(item, list) {\n  return list.push(item);\n}\n\nconst result = addToList('apple', ['banana']);\nconsole.log(result);",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`['apple', 'banana']`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`2`",
+        "isCorrect": true
+      },
+      {
+        "id": "C",
+        "title": "`true`",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`undefined`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "The `.push()` method returns the _length_ of the new array! Previously, the array contained one element (the string `\"banana\"`) and had a length of `1`. After adding the string `\"apple\"` to the array, the array contains two elements, and has a length of `2`. This gets returned from the `addToList` function.\n\nThe `push` method modifies the original array. If you wanted to return the _array_ from the function rather than the _length of the array_, you should have returned `list` after pushing `item` to it."
+  },
+  {
+    "id": 75,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#75-whats-the-output",
+    "code": "const box = { x: 10, y: 20 };\n\nObject.freeze(box);\n\nconst shape = box;\nshape.x = 100;\n\nconsole.log(shape);",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`{ x: 100, y: 20 }`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`{ x: 10, y: 20 }`",
+        "isCorrect": true
+      },
+      {
+        "id": "C",
+        "title": "`{ x: 100 }`",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`ReferenceError`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "`Object.freeze` makes it impossible to add, remove, or modify properties of an object (unless the property's value is another object).\n\nWhen we create the variable `shape` and set it equal to the frozen object `box`, `shape` also refers to a frozen object. You can check whether an object is frozen by using `Object.isFrozen`. In this case, `Object.isFrozen(shape)` returns true, since the variable `shape` has a reference to a frozen object.\n\nSince `shape` is frozen, and since the value of `x` is not an object, we cannot modify the property `x`. `x` is still equal to `10`, and `{ x: 10, y: 20 }` gets logged."
+  },
+  {
+    "id": 76,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#76-whats-the-output",
+    "code": "const { name: myName } = { name: 'Lydia' };\n\nconsole.log(name);",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`\"Lydia\"`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`\"myName\"`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`undefined`",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`ReferenceError`",
+        "isCorrect": true
+      }
+    ],
+    "answer": "When we unpack the property `name` from the object on the right-hand side, we assign its value `\"Lydia\"` to a variable with the name `myName`.\n\nWith `{ name: myName }`, we tell JavaScript that we want to create a new variable called `myName` with the value of the `name` property on the right-hand side.\n\nSince we try to log `name`, a variable that is not defined, a ReferenceError gets thrown."
+  },
+  {
+    "id": 77,
+    "title": "Is this a pure function?",
+    "link": "https://github.com/lydiahallie/javascript-questions#77-is-this-a-pure-function",
+    "code": "function sum(a, b) {\n  return a + b;\n}",
+    "variants": [
+      {
+        "id": "A",
+        "title": "Yes",
+        "isCorrect": true
+      },
+      {
+        "id": "B",
+        "title": "No",
+        "isCorrect": false
+      }
+    ],
+    "answer": "A pure function is a function that _always_ returns the same result, if the same arguments are passed.\n\nThe `sum` function always returns the same result. If we pass `1` and `2`, it will _always_ return `3` without side effects. If we pass `5` and `10`, it will _always_ return `15`, and so on. This is the definition of a pure function."
+  },
+  {
+    "id": 78,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#78-what-is-the-output",
+    "code": "const add = () => {\n  const cache = {};\n  return num => {\n    if (num in cache) {\n      return `From cache! ${cache[num]}`;\n    } else {\n      const result = num + 10;\n      cache[num] = result;\n      return `Calculated! ${result}`;\n    }\n  };\n};\n\nconst addFunction = add();\nconsole.log(addFunction(10));\nconsole.log(addFunction(10));\nconsole.log(addFunction(5 * 2));",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`Calculated! 20` `Calculated! 20` `Calculated! 20`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`Calculated! 20` `From cache! 20` `Calculated! 20`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`Calculated! 20` `From cache! 20` `From cache! 20`",
+        "isCorrect": true
+      },
+      {
+        "id": "D",
+        "title": "`Calculated! 20` `From cache! 20` `Error`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "The `add` function is a _memoized_ function. With memoization, we can cache the results of a function in order to speed up its execution. In this case, we create a `cache` object that stores the previously returned values.\n\nIf we call the `addFunction` function again with the same argument, it first checks whether it has already gotten that value in its cache. If that's the case, the caches value will be returned, which saves on execution time. Else, if it's not cached, it will calculate the value and store it afterwards.\n\nWe call the `addFunction` function three times with the same value: on the first invocation, the value of the function when `num` is equal to `10` isn't cached yet. The condition of the if-statement `num in cache` returns `false`, and the else block gets executed: `Calculated! 20` gets logged, and the value of the result gets added to the cache object. `cache` now looks like `{ 10: 20 }`.\n\nThe second time, the `cache` object contains the value that gets returned for `10`. The condition of the if-statement `num in cache` returns `true`, and `'From cache! 20'` gets logged.\n\nThe third time, we pass `5 * 2` to the function which gets evaluated to `10`. The `cache` object contains the value that gets returned for `10`. The condition of the if-statement `num in cache` returns `true`, and `'From cache! 20'` gets logged."
+  },
+  {
+    "id": 79,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#79-what-is-the-output",
+    "code": "const myLifeSummedUp = ['☕', '💻', '🍷', '🍫'];\n\nfor (let item in myLifeSummedUp) {\n  console.log(item);\n}\n\nfor (let item of myLifeSummedUp) {\n  console.log(item);\n}",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`0` `1` `2` `3` and `\"☕\"` `\"💻\"` `\"🍷\"` `\"🍫\"`",
+        "isCorrect": true
+      },
+      {
+        "id": "B",
+        "title": "`\"☕\"` `\"💻\"` `\"🍷\"` `\"🍫\"` and `\"☕\"` `\"💻\"` `\"🍷\"` `\"🍫\"`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`\"☕\"` `\"💻\"` `\"🍷\"` `\"🍫\"` and `0` `1` `2` `3`",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`0` `1` `2` `3` and `{0: \"☕\", 1: \"💻\", 2: \"🍷\", 3: \"🍫\"}`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "With a _for-in_ loop, we can iterate over **enumerable** properties. In an array, the enumerable properties are the \"keys\" of array elements, which are actually their indexes. You could see an array as:\n\n`{0: \"☕\", 1: \"💻\", 2: \"🍷\", 3: \"🍫\"}`\n\nWhere the keys are the enumerable properties. `0` `1` `2` `3` get logged.\n\nWith a _for-of_ loop, we can iterate over **iterables**. An array is an iterable. When we iterate over the array, the variable \"item\" is equal to the element it's currently iterating over, `\"☕\"` `\"💻\"` `\"🍷\"` `\"🍫\"` get logged."
+  },
+  {
+    "id": 80,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#80-what-is-the-output",
+    "code": "const list = [1 + 2, 1 * 2, 1 / 2];\nconsole.log(list);",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`[\"1 + 2\", \"1 * 2\", \"1 / 2\"]`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`[\"12\", 2, 0.5]`",
+        "isCorrect": false
+      },
+      {
+        "id": "C",
+        "title": "`[3, 2, 0.5]`",
+        "isCorrect": true
+      },
+      {
+        "id": "D",
+        "title": "`[1, 1, 1]`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "Array elements can hold any value. Numbers, strings, objects, other arrays, null, boolean values, undefined, and other expressions such as dates, functions, and calculations.\n\nThe element will be equal to the returned value. `1 + 2` returns `3`, `1 * 2` returns `2`, and `1 / 2` returns `0.5`."
+  },
+  {
+    "id": 81,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#81-what-is-the-output",
+    "code": "function sayHi(name) {\n  return `Hi there, ${name}`;\n}\n\nconsole.log(sayHi());",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`Hi there,`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`Hi there, undefined`",
+        "isCorrect": true
+      },
+      {
+        "id": "C",
+        "title": "`Hi there, null`",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`ReferenceError`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "By default, arguments have the value of `undefined`, unless a value has been passed to the function. In this case, we didn't pass a value for the `name` argument. `name` is equal to `undefined` which gets logged.\n\nIn ES6, we can overwrite this default `undefined` value with default parameters. For example:\n\n`function sayHi(name = \"Lydia\") { ... }`\n\nIn this case, if we didn't pass a value or if we passed `undefined`, `name` would always be equal to the string `Lydia`"
+  },
+  {
+    "id": 82,
+    "title": "What's the output?",
+    "link": "https://github.com/lydiahallie/javascript-questions#82-what-is-the-output",
+    "code": "var status = '😎';\n\nsetTimeout(() => {\n  const status = '😍';\n  const data = {\n    status: '🥑',\n    getStatus() {\n      return this.status;\n    },\n  };\n  console.log(data.getStatus());\n  console.log(data.getStatus.call(this));\n}, 0);",
+    "variants": [
+      {
+        "id": "A",
+        "title": "`\"🥑\"` and `\"😍\"`",
+        "isCorrect": false
+      },
+      {
+        "id": "B",
+        "title": "`\"🥑\"` and `\"😎\"`",
+        "isCorrect": true
+      },
+      {
+        "id": "C",
+        "title": "`\"😍\"` and `\"😎\"`",
+        "isCorrect": false
+      },
+      {
+        "id": "D",
+        "title": "`\"😎\"` and `\"😎\"`",
+        "isCorrect": false
+      }
+    ],
+    "answer": "The value of the `this` keyword is dependent on where you use it. In a **method**, like the `getStatus` method, the `this` keyword refers to _the object that the method belongs to_. The method belongs to the `data` object, so `this` refers to the `data` object. When we log `this.status`, the `status` property on the `data` object gets logged, which is `\"🥑\"`.\n\nWith the `call` method, we can change the object to which the `this` keyword refers. In **functions**, the `this` keyword refers to the _the object that the function belongs to_. We declared the `setTimeout` function on the _global object_, so within the `setTimeout` function, the `this` keyword refers to the _global object_. On the global object, there is a variable called _status_ with the value of `\"😎\"`. When logging `this.status`, `\"😎\"` gets logged."
   }
 ]

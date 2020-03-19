@@ -18,8 +18,6 @@ const App = () => {
     answered: 0
   });
 
-  console.log('state.cards', state.cards);
-
   const handleSwipe = variant => {
     setState(
       produce(state, draft => {

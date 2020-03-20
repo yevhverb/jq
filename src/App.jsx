@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import produce from 'immer';
 import { shuffle } from 'lodash';
 import AppContainer from './components/AppContainer';
@@ -7,19 +7,31 @@ import Card from './components/Card';
 import AppStart from './components/AppStart';
 import AppResult from './components/AppResult';
 
-import questions from './data/questions.json';
-
 const App = () => {
-  const [first, ...others] = shuffle(questions);
-
   const [state, setState] = useState({
-    questions: others,
-    cards: [first],
+    questions: [],
+    cards: [],
     correct: 0,
-    answered: 0
+    total: 0
   });
-
   const [isStart, setIsStart] = useState(true);
+
+  useEffect(() => {
+    fetch(
+      'https://raw.githubusercontent.com/yevhverb/jq/gh-pages/static/data/questions.json'
+    )
+      .then(res => res.json())
+      .then(questions => {
+        const [first, ...others] = shuffle(questions);
+
+        setState({
+          ...state,
+          questions: others,
+          cards: [first],
+          total: questions.length
+        });
+      });
+  }, []);
 
   const handleStart = () => setIsStart(false);
 
@@ -27,7 +39,6 @@ const App = () => {
     setState(
       produce(state, draft => {
         if (variant?.id) {
-          draft.answered += 1;
           if (variant.isCorrect) draft.correct += 1;
         } else {
           const last = draft.cards.length - 1;
@@ -41,14 +52,12 @@ const App = () => {
     );
   };
 
-  const { cards, correct, answered } = state;
-  const percent = (cards.length / questions.length) * 100;
+  const { cards, correct, total } = state;
+  const percent = (cards.length / total) * 100;
 
   return (
     <AppContainer>
-      {isStart && (
-        <AppStart {...{ handleStart }} questions={questions.length} />
-      )}
+      {isStart && <AppStart {...{ handleStart }} total={total} />}
       {!isStart && <AppProgress percent={percent} />}
       {!isStart &&
         state.cards
@@ -57,7 +66,7 @@ const App = () => {
             card ? (
               <Card {...card} handleSwipe={handleSwipe} key={card.id} />
             ) : (
-              <AppResult {...{ correct, answered }} key={0} />
+              <AppResult {...{ correct, total }} key={0} />
             )
           )}
     </AppContainer>

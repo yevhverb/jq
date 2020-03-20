@@ -3,12 +3,12 @@ import T from 'prop-types';
 import { ScaleMotion } from '../Motions';
 import CardContainer from '../CardContainer';
 
-const AppStart = ({ questions, handleStart }) => {
+const AppStart = ({ total, handleStart }) => {
   return (
     <ScaleMotion>
       <CardContainer>
         <h2 className="text-center text-3xl font-bold">
-          {questions} questions of JavaScript
+          {total} questions of JavaScript
         </h2>
         <div className="my-6 md:mx-16 text-center text-sm">
           <p>To change a question, just swipe the card left or right.</p>
@@ -39,7 +39,7 @@ const AppStart = ({ questions, handleStart }) => {
 };
 
 AppStart.propTypes = {
-  questions: T.oneOfType([T.string, T.number]),
+  total: T.oneOfType([T.string, T.number]),
   handleStart: T.func
 };
 

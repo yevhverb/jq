@@ -8,7 +8,7 @@ const AppResult = ({ correct, total }) => {
     <ScaleMotion className="w-full h-full">
       <CardContainer>
         <p className="text-xl font-bold text-center">
-          Your have {correct} correct {correct === 1 ? 'answer' : 'answers'} of{' '}
+          Your have {correct} correct {correct === 1 ? 'answer' : 'answers'} of
           {total} questions!
         </p>
         <button

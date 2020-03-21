@@ -6,7 +6,7 @@ import './CardVariants.css';
 
 const CardVariants = ({ variants, idChoiced, handleChoice }) => {
   return (
-    <ul className="mt-6 mb-4">
+    <ul className="mt-6 mb-3">
       {variants.map(variant => (
         <CardVariant
           {...variant}

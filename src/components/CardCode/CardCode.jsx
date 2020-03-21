@@ -4,7 +4,7 @@ import T from 'prop-types';
 const CardCode = ({ code }) => {
   return (
     <div className="my-6 px-5 py-3 rounded-md text-sm bg-gray-200">
-      <pre className="overflow-x-auto">
+      <pre className="custom-scroll overflow-x-auto">
         <code>{code}</code>
       </pre>
     </div>

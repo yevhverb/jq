@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import T from 'prop-types';
 import { ScaleMotion, DragXMotion } from '../Motions';
 import CardContainer from '../CardContainer';
@@ -10,6 +10,11 @@ import CardVariants from '../CardVariants';
 
 const Card = ({ id, link, title, code, answer, variants, handleSwipe }) => {
   const [variant, setVariant] = useState(null);
+
+  useEffect(() => {
+    const { origin, pathname } = window.location;
+    window.history.pushState(null, null, `${origin}${pathname}`);
+  }, []);
 
   const handleChoice = variant => setVariant(variant);
 

@@ -12,7 +12,7 @@ const AppStart = ({ total, handleStart }) => {
         </h2>
         <div className="my-6 md:mx-16 text-center text-sm">
           <p>To change a question, just swipe the card left or right.</p>
-          <p>
+          <p className="mt-4">
             Unanswered questions are returned to the end of the queue until they
             are answered.
           </p>

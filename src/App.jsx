@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import produce from 'immer';
-import { shuffle } from 'lodash';
-import { useQuery } from './helpers';
+import { shuffle, differenceBy } from 'lodash';
+import { useQuery, useLocalStorage } from './helpers';
 import AppContainer from './components/AppContainer';
 import AppProgress from './components/AppProgress';
 import Card from './components/Card';
@@ -12,6 +12,7 @@ import { LoadIndicator } from './components/Indicators';
 const App = () => {
   const query = useQuery();
   const question = query.get('q');
+  const [answered, setAnswered] = useLocalStorage('jq_answered', []);
 
   const [isLoading, setIsLoading] = useState(true);
   const [isStart, setIsStart] = useState(!question);
@@ -28,12 +29,23 @@ const App = () => {
     )
       .then(res => res.json())
       .then(questions => {
-        questions = shuffle(questions);
+        const total = questions.length;
+        const isCorrectQuestion = question > 0 && question <= questions.length;
 
-        let first = null;
-        let others = null;
+        if (isCorrectQuestion) {
+          setAnswered(
+            produce(answered(), draft => {
+              const idx = draft.findIndex(e => e.id === Number(question));
+              if (idx > -1) {
+                draft.splice(idx, 1);
+              }
+            })
+          );
+        }
 
-        if (question > 0 && question <= questions.length) {
+        questions = shuffle(differenceBy(questions, answered(), 'id'));
+
+        if (isCorrectQuestion) {
           const idx = questions.findIndex(q => q.id === Number(question));
           questions = [
             questions[idx],
@@ -42,26 +54,29 @@ const App = () => {
           ];
         }
 
-        [first, ...others] = questions;
+        const [first, ...others] = questions;
 
         setIsLoading(false);
 
         setState({
           ...state,
+          total,
           questions: others,
-          cards: [first],
-          total: questions.length
+          cards: [...answered(), first],
+          correct: answered()?.length
+            ? answered().reduce((a, e) => (e.variant.isCorrect ? a + 1 : a), 0)
+            : 0
         });
       });
   }, []);
 
   const handleStart = () => setIsStart(false);
 
-  const handleSwipe = variant => {
+  const handleSwipe = answer => {
     setState(
       produce(state, draft => {
-        if (variant?.id) {
-          if (variant.isCorrect) draft.correct += 1;
+        if (answer?.variant) {
+          if (answer.variant.isCorrect) draft.correct += 1;
         } else {
           const last = draft.cards.length - 1;
 
@@ -72,6 +87,19 @@ const App = () => {
         draft.questions.shift();
       })
     );
+
+    if (answer?.variant) {
+      setAnswered(
+        produce(answered(), draft => {
+          draft.push(answer);
+        })
+      );
+    }
+  };
+
+  const handleReset = () => {
+    setAnswered([]);
+    window.location.reload();
   };
 
   const { cards, correct, total } = state;
@@ -80,7 +108,13 @@ const App = () => {
   return (
     <AppContainer>
       {isLoading && <LoadIndicator />}
-      {!isLoading && isStart && <AppStart {...{ handleStart }} total={total} />}
+      {!isLoading && isStart && (
+        <AppStart
+          {...{ handleStart, handleReset }}
+          total={total}
+          answered={cards.length - 1}
+        />
+      )}
       {!isLoading && !isStart && <AppProgress percent={percent} />}
       {!isLoading &&
         !isStart &&
@@ -90,7 +124,7 @@ const App = () => {
             card ? (
               <Card {...card} handleSwipe={handleSwipe} key={card.id} />
             ) : (
-              <AppResult {...{ correct, total }} key={0} />
+              <AppResult {...{ correct, total, handleReset }} key={0} />
             )
           )}
     </AppContainer>

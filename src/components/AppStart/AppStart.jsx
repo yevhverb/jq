@@ -3,7 +3,7 @@ import T from 'prop-types';
 import { ScaleMotion } from '../Motions';
 import CardContainer from '../CardContainer';
 
-const AppStart = ({ total, handleStart }) => {
+const AppStart = ({ total, handleStart, handleReset, answered }) => {
   return (
     <ScaleMotion>
       <CardContainer>
@@ -27,12 +27,27 @@ const AppStart = ({ total, handleStart }) => {
             </a>
           </p>
         </div>
-        <button
-          className="w-full my-2 py-2 rounded-md text-center font-bold bg-green-200 hover:bg-green-300 transition duration-200"
-          onClick={handleStart}
-        >
-          GET STARTED
-        </button>
+        {answered > 1 && (
+          <h3 className="my-4 text-center text-xl font-bold">
+            You already have {answered} answers
+          </h3>
+        )}
+        <div className="flex flex-wrap sm:flex-no-wrap">
+          <button
+            className="w-full sm:mr-2 my-2 py-2 rounded-md text-center font-bold bg-green-200 hover:bg-green-300 transition duration-200"
+            onClick={handleStart}
+          >
+            {answered > 1 ? 'CONTINUE' : 'GET STARTED'}
+          </button>
+          {answered > 1 && (
+            <button
+              className="w-full sm:ml-2 my-2 py-2 rounded-md text-center font-bold bg-gray-200 hover:bg-gray-300 transition duration-200"
+              onClick={handleReset}
+            >
+              RESET
+            </button>
+          )}
+        </div>
       </CardContainer>
     </ScaleMotion>
   );
@@ -40,7 +55,9 @@ const AppStart = ({ total, handleStart }) => {
 
 AppStart.propTypes = {
   total: T.oneOfType([T.string, T.number]),
-  handleStart: T.func
+  handleStart: T.func,
+  handleReset: T.func,
+  answered: T.number
 };
 
 export default AppStart;

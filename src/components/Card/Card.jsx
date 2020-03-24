@@ -22,7 +22,7 @@ const Card = ({ id, link, title, code, answer, variants, handleSwipe }) => {
     <ScaleMotion className="w-full h-full">
       <DragXMotion
         className="w-full h-full"
-        handler={() => handleSwipe(variant)}
+        handler={() => handleSwipe({ id, variant })}
       >
         <CardContainer>
           <CardID {...{ id, link }} />

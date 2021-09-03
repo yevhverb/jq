@@ -11,7 +11,7 @@
     "@testing-library/user-event": "^7.2.1",
     "clipboard": "^2.0.6",
     "framer-motion": "^1.9.1",
-    "immer": "^8.0.1",
+    "immer": "^9.0.6",
     "prop-types": "^15.7.2",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
